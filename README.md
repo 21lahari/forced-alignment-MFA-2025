@@ -1,45 +1,73 @@
-Forced Alignment with Montreal Forced Aligner
-Overview
-This project demonstrates a complete forced alignment pipeline using the Montreal Forced Aligner (MFA) tool. It automatically matches speech audio with text transcripts at word and phoneme levels, outputting Praat-compatible TextGrids. The workflow and scripts provided enable easy reproduction and extension for similar datasets.
+# Forced Alignment with Montreal Forced Aligner (MFA)
 
-Setup Instructions
-Requirements:
+## Overview
+This repository provides a complete pipeline for forced alignment of speech audio and transcripts using **Montreal Forced Aligner (MFA)**. It outputs Praat-compatible TextGrids with word and phoneme boundaries. Workflow and scripts enable direct reproduction and adaptation for similar datasets.
 
-Python 3.8–3.11 (recommended via Miniconda)
+***
 
-Montreal Forced Aligner
+## Requirements
+- Python 3.8–3.11 (recommended via Miniconda/Anaconda)
+- Montreal Forced Aligner (see [MFA GitHub])[1]
+- Praat (optional, for viewing `.TextGrid` outputs)
+- Windows or Linux OS
 
-Praat (optional, for viewing results)
+***
 
-Windows or Linux OS
-
-Installation:
-
-bash
+## Installation
+Create and activate a dedicated environment using Conda:
+```bash
 conda create -n aligner -c conda-forge montreal-forced-aligner
 conda activate aligner
-# (Optional) If on Windows, use PostgreSQL backend to avoid SQLite errors
-# Download models and dictionary
+```
+For Windows users: to avoid SQLite errors, use PostgreSQL backend flags in alignment commands.
+
+Download necessary models and dictionaries:
+```bash
 mfa model download acoustic english_us_arpa
 mfa model download dictionary english_us_arpa
-Dataset Preparation
-Place your .wav audio and corresponding .txt transcript files in a folder, e.g. corpus/, ensuring each audio/transcript pair shares the same base filename.
+```
 
-Example:
+***
 
-text
+## Dataset Preparation
+Organize your audio (.wav) and transcript (.txt) files in a folder, e.g. `corpus/`. Each transcript filename must match its audio (apart from the extension):
+```bash
 corpus/
   ├── sample1.wav
   └── sample1.txt
-Running the Alignment
-bash
-# Basic command (use PostgreSQL flags for best compatibility on Windows)
+```
+Prepare an empty output folder, e.g. `output/`.
+
+***
+
+## Running Alignment
+Run forced alignment and generate `.TextGrid` files:
+```bash
 mfa align corpus english_us_arpa english_us_arpa output --use_postgres --auto_server
-Output .TextGrid files will be saved to the output/ folder for each audio input.
+```
+Outputs will appear in the `output/` folder, one `.TextGrid` per input audio file.
 
-Viewing Results
-Open output .TextGrid and .wav in Praat:
+***
 
-In Praat, open both files via File > Open > Read from file...
+## Viewing Results in Praat
+1. Open Praat software.
+2. "File" → "Open" → "Read from file..."; load a `.wav` and its matching `.TextGrid`.
+3. Select both in the Objects window, then click "View & Edit" to see word/phoneme boundaries.
+4. Zoom and play audio to inspect accuracy.
 
-Select both in the Objects window, then View & Edit to inspect word and phoneme boundaries.
+***
+
+## Troubleshooting
+- **SQLite errors on Windows:** Always use `--use_postgres --auto_server` flags.
+- Corpus files must have matching base names; ensure no missing files or typos.
+- See [MFA documentation] and [tutorials] for advanced usage.[3][6]
+  ***
+  
+## References
+- [MFA Official GitHub][1]
+- [MFA Documentation][3]
+- [Praat Software]
+
+***
+
+**Contact:** Maintainer: Pasham Lahari / Email: pashamlahari21@gmail.com
